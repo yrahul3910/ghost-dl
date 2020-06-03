@@ -5,3 +5,9 @@ GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a par
 
 - Use `pip install -r requirements.txt` to install all the python3 dependencies and package (alternatively, run `make install`).
 - Run `python3 main_[d2h|popt20].py`
+
+# Research Questions
+
+## Can deep learners be used in software engineer-ing without unreasonable training times?
+
+[Link to code](./doc/RQ1.py)
