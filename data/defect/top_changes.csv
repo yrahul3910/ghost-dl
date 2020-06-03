@@ -1,0 +1,11 @@
+,Name,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21
+0,lucene,name.1,amc,loc,avg_cc,cam,mfa,rfc,wmc,ca,cbo,npm,ce,lcom,max_cc,lcom3,dit,moa,cbm,ic,noc,dam,version
+1,synapse,name.1,loc,amc,avg_cc,lcom,rfc,cbo,wmc,ce,npm,max_cc,ca,cam,lcom3,mfa,dit,dam,cbm,moa,ic,noc,version
+2,jedit,name.1,amc,loc,avg_cc,lcom,rfc,mfa,cbo,wmc,cam,npm,max_cc,ca,lcom3,ce,cbm,moa,ic,dit,dam,noc,version
+3,xerces,name.1,amc,loc,avg_cc,rfc,lcom,cam,wmc,dit,npm,mfa,cbo,ce,max_cc,ic,ca,cbm,dam,moa,lcom3,noc,version
+4,camel,name.1,amc,loc,avg_cc,mfa,lcom,cbo,rfc,cam,ce,npm,wmc,ca,dit,max_cc,cbm,lcom3,moa,noc,ic,dam,version
+5,velocity,name.1,amc,loc,mfa,avg_cc,lcom,rfc,cam,cbo,ca,wmc,dit,npm,ce,ic,max_cc,cbm,moa,lcom3,dam,noc,version
+6,xalan,name.1,amc,loc,avg_cc,lcom,rfc,cbo,mfa,ca,npm,ce,cam,wmc,max_cc,dit,cbm,moa,ic,lcom3,noc,dam,version
+7,poi,name.1,amc,loc,lcom,cam,avg_cc,npm,rfc,wmc,cbm,lcom3,max_cc,mfa,ce,cbo,dit,ca,dam,moa,noc,ic,version
+8,ivy,loc,amc,avg_cc,lcom,rfc,ce,cbo,wmc,npm,mfa,ca,cam,name.1,lcom3,max_cc,ic,moa,cbm,noc,dit,dam,version
+9,log4j,name.1,amc,loc,avg_cc,lcom,rfc,cbo,wmc,cam,npm,lcom3,mfa,ce,ca,max_cc,moa,cbm,dam,dit,ic,noc,version
