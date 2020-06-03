@@ -1,9 +1,17 @@
 import os
+import warnings
 import numpy as np
 import pandas as pd
 import time 
+import sys
+
+warnings.filterwarnings("ignore")
+
+sys.path.append(os.path.abspath("../src/"))
+from helper.ML import *
 
 
+data_path = "../data/defect/"
 file_dic = {"ivy":     ["ivy-1.1.csv", "ivy-1.4.csv", "ivy-2.0.csv"],\
         "lucene":  ["lucene-2.0.csv", "lucene-2.2.csv", "lucene-2.4.csv"],\
         "poi":     ["poi-1.5.csv", "poi-2.0.csv", "poi-2.5.csv", "poi-3.0.csv"],\
