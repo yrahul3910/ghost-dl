@@ -14,7 +14,7 @@
 <img src="https://img.shields.io/badge/platform-mac,*nux-informational">&nbsp;
 <img src="https://img.shields.io/badge/purpose-ai,se-blueviolet">&nbsp;
 </p>
-
+<hr />
 # Why Deep Learning Fails for Defect Prediction (and How to Fix it using GHOST)
 GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a paradigm for fast training and tuning of deep learners for software engineering. We use DODGE for hyperparameter optimziation; as such, the code is based off the [DODGE repository](https://github.com/amritbhanu/Dodge). 
 
