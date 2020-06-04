@@ -1,10 +1,21 @@
 <p align="center">
+<b>GHOST</b> <br />
+<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/README.md">about</a>  :: 
+<a href="https://github.com/anonymousalpaca/ghost-dl/">code</a>  ::
+<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/LICENSE">license</a>  ::
+<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/INSTALL.md">install</a>  ::
+<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/CODE_OF_CONDUCT.md">contribute</a>  ::
+<a href="https://github.com/anonymousalpaca/ghost-dl/issues/">issues</a>  ::
+<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/CONTACT.md">contact</a>
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/language-python-orange.svg">&nbsp;
 <img src="https://img.shields.io/badge/license-MIT-green.svg">&nbsp;
 <img src="https://img.shields.io/badge/platform-mac,*nux-informational">&nbsp;
 <img src="https://img.shields.io/badge/purpose-ai,se-blueviolet">&nbsp;
 </p>
 
-# GHOST
+# Why Deep Learning Fails for Defect Prediction (and How to Fix it using GHOST)
 GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a paradigm for fast training and tuning of deep learners for software engineering. We use DODGE for hyperparameter optimziation; as such, the code is based off the [DODGE repository](https://github.com/amritbhanu/Dodge). 
 
 # Usage
