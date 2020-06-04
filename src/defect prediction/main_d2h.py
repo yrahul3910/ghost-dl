@@ -19,7 +19,6 @@ import time
 import pickle
 from collections import OrderedDict
 from operator import itemgetter
-from tqdm import tqdm
 
 
 metrics=["d2h","popt","popt20"]
@@ -93,8 +92,7 @@ def _test(res=''):
                 func_str_counter_dic[string1] = 0
 
             counter=0
-            pbar = tqdm(total=100)
-            while counter!=100:
+            while counter!=40:
                 if counter not in dic_func.keys():
                     dic_func[counter]=[]
                 try:
@@ -121,7 +119,6 @@ def _test(res=''):
                     dic_auc[counter]=min(lis_value)
 
                     counter+=1
-                    pbar.update(1)
                 except:
                     raise
 
