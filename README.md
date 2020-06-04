@@ -1,3 +1,9 @@
+<p align="center">
+<img src="https://img.shields.io/badge/license-MIT-green.svg">&nbsp;
+<img src="https://img.shields.io/badge/platform-mac,*nux-informational">&nbsp;
+<img src="https://img.shields.io/badge/purpose-ai,se-blueviolet">&nbsp;
+</p>
+
 # GHOST
 GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a paradigm for fast training and tuning of deep learners for software engineering. We use DODGE for hyperparameter optimziation; as such, the code is based off the [DODGE repository](https://github.com/amritbhanu/Dodge). 
 
