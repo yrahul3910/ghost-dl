@@ -20,8 +20,8 @@ We were able to find optimal hyperparameters for our deep learners in under 4 mi
 
 ## RQ3: Can we tune deep learners to optimize for specific metrics?
 
-Our experiments clearly show an ability to tune the network to optimize for specific metrics by tuning the loss function.
-[Link to code](./doc/RQ3.py)
+Our experiments clearly show an ability to tune the network to optimize for specific metrics by tuning the loss function. In `src/helper/ML.py`, in `run_model(...)`, change the fraction from `1.0 / frac` to `10.0 / frac` or `100.0 / frac` (the numerator is the weight; for unweighted, change the loss function to `binary_crossentropy`). Then, run the main code.
+[Link to code](./src/defect prediction/main_d2h.py)
 
 ## RQ4: Are deep learners scalable?
 
