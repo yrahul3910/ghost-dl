@@ -1,4 +1,5 @@
 numpy
+mlxtend
 matplotlib
 pandas
 scikit-learn

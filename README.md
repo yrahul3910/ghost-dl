@@ -26,22 +26,26 @@ GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a par
 
 # Research Questions
 
-## RQ1: Can deep learners be used in software engineering without unreasonable training times?
+## RQ1: Does deep learning work for defect prediction?
 
-The median training times for all datasets on a CPU were less than 2 seconds.
+For defect prediction, standard deep learners usually do not perform better than existing state-of-the-art methods in 33/40 experiments.
 [Link to code](./doc/RQ1.py)
 
-## RQ2: Can we perform hyperparameter optimization for deep learners in software engineering?
+## RQ2: How can deep learning perform better for defect prediction?
 
-We were able to find optimal hyperparameters for our deep learners in under 4 minutes on average using DODGE.
+The lack-of-success of deep learning in defect prediction can be attributed to optimizing for the wrong metric.
 [Link to code](./doc/RQ2.py)
 
-## RQ3: Can we tune deep learners to optimize for specific metrics?
+## RQ3: How do we improve the results of deep learners on defect prediction?
 
-Our experiments clearly show an ability to tune the network to optimize for specific metrics by tuning the loss function. In `src/helper/ML.py`, in `run_model(...)`, change the fraction from `1.0 / frac` to `10.0 / frac` or `100.0 / frac` (the numerator is the weight; for unweighted, change the loss function to `binary_crossentropy`). Then, run the main code.
-[Link to code](./src/defect prediction/main_d2h.py)
+For most evaluation goals, this modified version of deep learning performs better than the prior state-of-the-art.
+[Link to code](./src/defect prediction/main_d2h.py')
 
-## RQ4: Are deep learners scalable?
+## RQ4: Does deep learning work well in all cases?
 
-Our models scale well with the size of our datasets. With a 10x increase in the size of the data, the largest increase in the runtime was less than 4x.
-[Link to code](./doc/RQ4.py)
+Depending on the goals of the data mining, deep learning may or may not be best choice.
+
+## RQ5: How slow is tuning for deep learning for defect prediction?
+
+Tuning deep learners is both practical and tractable for defect prediction.
+[Link to code](./doc/RQ5.py)
