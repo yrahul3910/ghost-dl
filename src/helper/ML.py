@@ -7,7 +7,10 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
 from keras.models import Sequential
-from keras.layers import Dense, Input
+from keras.optimizers import SGD
+from keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from keras.layers import Dense, Input, Dropout, BatchNormalization
+from keras.callbacks import EarlyStopping
 from keras import backend as K
 from helper.utilities import _randuniform,_randchoice,_randint
 from helper.utilities import *
@@ -83,7 +86,7 @@ def weighted_categorical_crossentropy(weights):
     return loss
 
 def DeepLearner(inputs=20):
-    n_layers = randint(1, 4)
+    n_layers = randint(1, 5)
     n_units = randint(2, 20)
 
     model = Sequential()
@@ -95,13 +98,38 @@ def DeepLearner(inputs=20):
     tmp = str(n_layers) + "_" + str(n_units) + "_DL"
     return model, tmp
 
+
+
+# from https://stackoverflow.com/questions/30564015/how-to-generate-random-points-in-a-circular-distribution
+def fuzz_data(X, y, radii=(0., .3, .03)):
+    idx = np.where(y == 1)[0]
+    frac = len(idx) * 1. / len(y)
+    print('debug: weight =', 1./frac)
+    
+    fuzzed_x = []
+    fuzzed_y = []
+    
+    for row in X[idx]:
+        for i, r in enumerate(np.arange(*radii)):
+            for j in range(int((1./frac) / pow(2., i))):
+                fuzzed_x.append([val - r for val in row])
+                fuzzed_x.append([val + r for val in row])
+                fuzzed_y.append(1)
+                fuzzed_y.append(1)
+    
+    return np.concatenate((X, np.array(fuzzed_x)), axis=0), np.concatenate((y, np.array(fuzzed_y)))
+
 def run_model(train_data,test_data,model,metric,training=-1):
     frac = sum(train_data["bug"]) * 1.0 / len(train_data["bug"])
-    weights = np.array([1., 1. / frac])
+    weights = np.array([ 1., 1. / frac])
 
-    model.compile('sgd', loss=weighted_categorical_crossentropy(weights))
-    model.fit(train_data[train_data.columns[:training]], train_data["bug"], epochs=10, verbose=0)
+    X_train, y_train = fuzz_data(np.array(train_data[train_data.columns[:training]]), np.array(train_data["bug"]))
+
+    model.compile('adam', loss=weighted_categorical_crossentropy(weights))
+    model.fit(X_train, y_train, epochs=30, verbose=1, callbacks=[EarlyStopping(patience=5, min_delta=0.001, monitor='loss')])
     prediction = model.predict_classes(test_data[test_data.columns[:training]])
     test_data.loc[:,"prediction"]=prediction
-    return round(get_score(metric,prediction, test_data["bug"].tolist(),test_data ),5)
+    perf = round(get_score(metric, prediction, test_data["bug"].tolist(), test_data), 5)
+    print(metric, '-', perf)
+    return perf
 

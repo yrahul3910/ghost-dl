@@ -23,28 +23,24 @@ from operator import itemgetter
 metrics=["d2h","popt","popt20"]
 data_path = os.path.join(cwd, "..","..", "data","defect")
 
-file_dic = {"ivy":     ["ivy-1.4.csv", "ivy-2.0.csv"],\
-        "lucene":  ["lucene-2.0.csv", "lucene-2.2.csv"],\
-        "lucene2": ["lucene-2.2.csv", "lucene-2.4.csv"],\
-        "poi":     ["poi-1.5.csv", "poi-2.5.csv"],\
-        "poi2": ["poi-2.5.csv", "poi-3.0.csv"],\
-        "synapse": ["synapse-1.0.csv", "synapse-1.1.csv"],\
-        "synapse2": ["synapse-1.1.csv", "synapse-1.2.csv"], \
-        "camel": ["camel-1.2.csv", "camel-1.4.csv"], \
-        "camel2": ["camel-1.4.csv", "camel-1.6.csv"],\
-        "xerces": ["xerces-1.2.csv", "xerces-1.3.csv"],
-        "jedit": ["jedit-3.2.csv", "jedit-4.0.csv"], \
-        "jedit2": ["jedit-4.0.csv", "jedit-4.1.csv"],\
-        "log4j": ["log4j-1.0.csv", "log4j-1.1.csv"], \
-        "xalan": ["xalan-2.4.csv", "xalan-2.5.csv"]
+file_dic = {
+        "log4j-jedit": ["log4j-1.1.csv", "jedit-4.1.csv"],\
+        "lucene-log4j": ["lucene-2.2.csv", "log4j-1.1.csv"],\
+        "lucene-xalan": ["lucene-2.2.csv", "xalan-2.5.csv"],\
+        "xerces-xalan": ["xerces-1.3.csv", "xalan-2.5.csv"],\
+        "ivy-xerces": ["ivy-2.0.csv", "xerces-1.3.csv"],\
+        "synapse-ivy": ["synapse-1.2.csv", "ivy-2.0.csv"],\
+        "poi-synapse": ["poi-3.0.csv", "synapse-1.2.csv"]
         }
 
 #file_inc = {"ivy": 0, "lucene": 1, "poi":  2, "synapse":3, "velocity":4, "camel": 5,"jedit": 6,
 #            "log4j": 7, "xalan": 8,"xerces": 9}
+file_dic_inv = {x.split('-')[1] + '-' + x.split('-')[0]: file_dic[x][::-1] for x in file_dic.keys()}
 file_inc = {x: i for (i, x) in enumerate(file_dic.keys())}
+file_inv_inc = {x: i for (i, x) in enumerate(file_dic_inv.keys())}
 
 def _test(res=''):
-    paths = [os.path.join(data_path, file_name) for file_name in file_dic[res]]
+    paths = [os.path.join(data_path, file_name) for file_name in file_dic_inv[res]]
     train_df = pd.concat([pd.read_csv(path) for path in paths[:-1]], ignore_index=True)
     test_df = pd.read_csv(paths[-1])
 
@@ -53,7 +49,7 @@ def _test(res=''):
     df=pd.concat([train_df,test_df],ignore_index=True)
     df['bug']=df['bug'].apply(lambda x: 0 if x == 0 else 1)
 
-    metric="recall"
+    metric="f1"
 
     final = {}
     final_auc={}
@@ -61,7 +57,7 @@ def _test(res=''):
     start_time=time.time()
     dic={}
     dic_func={}
-    for mn in range(500+file_inc[res]*10,520+file_inc[res]*10):
+    for mn in range(500+file_inv_inc[res]*10,520+file_inv_inc[res]*10):
         for e in e_value:
             preprocess = [standard_scaler, minmax_scaler, [normalizer]*10]  # ,[polynomial]*5
             MLs = [[DeepLearner] * 20]  # [SVM]*100,
@@ -129,8 +125,7 @@ def _test(res=''):
     print(final_auc)
 
 if __name__ == '__main__':
-    for i in file_inc.keys():
-        if i not in ['camel', 'xerces', 'jedit']: continue
+    for i in file_inv_inc.keys():
         print(i)
         with ProcessPoolExecutor(max_workers=4) as executor:
             result = executor.submit(_test, i).result()

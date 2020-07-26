@@ -44,10 +44,15 @@ def get_score(criteria, prediction, test_labels,data):
     tn, fp, fn, tp = confusion_matrix(test_labels,prediction, labels=[0,1]).ravel()
     pre, rec, spec, fpr, npv, acc, f1 = get_performance(tn, fp, fn, tp)
     all_metrics = [tp, fp, tn, fn, pre, rec, spec, fpr, npv, acc, f1]
+    print('tp, fp, tn, fn, pre, rec, spec, pf, npv, acc, f1 =', all_metrics)
     if criteria == "Accuracy":
         score = -all_metrics[-ACC]
+    elif criteria == "prec":
+        score = pre
+    elif criteria == "recall":
+        score = rec
     elif criteria == "d2h":
-        score = all_metrics[-FPR] ** 2 + (1 - all_metrics[-REC]) ** 2
+        score = all_metrics[-FPR] ** 2 + 2 * (1 - all_metrics[-REC]) ** 2
         score = math.sqrt(score) / math.sqrt(2)
     elif criteria=="Pf_Auc":
         score=auc_measure(prediction,test_labels)
@@ -59,6 +64,8 @@ def get_score(criteria, prediction, test_labels,data):
         p1 = all_metrics[-PRE]  # target == 1 for the positive split
         p0 = 1 - all_metrics[-NPV]  # target == 1 for the negative split
         score = 1 - p0 ** 2 - p1 ** 2
+    elif criteria == "f1":
+        score = f1
     else:  # Information Gain
         P, N = all_metrics[0] + all_metrics[3], all_metrics[1] + all_metrics[2]
         p = 1.0 * P / (P + N) if P + N > 0 else 0  # before the split
@@ -86,7 +93,7 @@ def get_recall(true):
     total_true = float(len([i for i in true if i == 1]))
     hit = 0.0
     recall = []
-    for i in xrange(len(true)):
+    for i in range(len(true)):
         if true[i] == 1:
             hit += 1
         recall += [hit / total_true if total_true else 0.0]

@@ -23,22 +23,17 @@ from operator import itemgetter
 metrics=["d2h","popt","popt20"]
 data_path = os.path.join(cwd, "..","..", "data","defect")
 
-file_dic = {"ivy":     ["ivy-1.4.csv", "ivy-2.0.csv"],\
-        "lucene":  ["lucene-2.0.csv", "lucene-2.2.csv"],\
-        "lucene2": ["lucene-2.2.csv", "lucene-2.4.csv"],\
-        "poi":     ["poi-1.5.csv", "poi-2.5.csv"],\
-        "poi2": ["poi-2.5.csv", "poi-3.0.csv"],\
-        "synapse": ["synapse-1.0.csv", "synapse-1.1.csv"],\
-        "synapse2": ["synapse-1.1.csv", "synapse-1.2.csv"], \
-        "camel": ["camel-1.2.csv", "camel-1.4.csv"], \
-        "camel2": ["camel-1.4.csv", "camel-1.6.csv"],\
-        "xerces": ["xerces-1.2.csv", "xerces-1.3.csv"],
-        "jedit": ["jedit-3.2.csv", "jedit-4.0.csv"], \
-        "jedit2": ["jedit-4.0.csv", "jedit-4.1.csv"],\
-        "log4j": ["log4j-1.0.csv", "log4j-1.1.csv"], \
-        "xalan": ["xalan-2.4.csv", "xalan-2.5.csv"]
+file_dic = {"ivy":     ["ivy-1.1.csv", "ivy-1.4.csv", "ivy-2.0.csv"],\
+        "lucene":  ["lucene-2.0.csv", "lucene-2.2.csv", "lucene-2.4.csv"],\
+        "poi":     ["poi-1.5.csv", "poi-2.0.csv", "poi-2.5.csv", "poi-3.0.csv"],\
+        "synapse": ["synapse-1.0.csv", "synapse-1.1.csv", "synapse-1.2.csv"],\
+        "velocity":["velocity-1.4.csv", "velocity-1.5.csv", "velocity-1.6.csv"], \
+        "camel": ["camel-1.0.csv", "camel-1.2.csv", "camel-1.4.csv", "camel-1.6.csv"], \
+        "jedit": ["jedit-3.2.csv", "jedit-4.0.csv", "jedit-4.1.csv", "jedit-4.2.csv", "jedit-4.3.csv"], \
+        "log4j": ["log4j-1.0.csv", "log4j-1.1.csv", "log4j-1.2.csv"], \
+        "xalan": ["xalan-2.4.csv", "xalan-2.5.csv", "xalan-2.6.csv", "xalan-2.7.csv"], \
+        "xerces": ["xerces-1.2.csv", "xerces-1.3.csv", "xerces-1.4.csv"]
         }
-
 #file_inc = {"ivy": 0, "lucene": 1, "poi":  2, "synapse":3, "velocity":4, "camel": 5,"jedit": 6,
 #            "log4j": 7, "xalan": 8,"xerces": 9}
 file_inc = {x: i for (i, x) in enumerate(file_dic.keys())}
@@ -53,17 +48,17 @@ def _test(res=''):
     df=pd.concat([train_df,test_df],ignore_index=True)
     df['bug']=df['bug'].apply(lambda x: 0 if x == 0 else 1)
 
-    metric="recall"
+    metric="d2h"
 
     final = {}
     final_auc={}
-    e_value = [0.2]
+    e_value = [0.1]
     start_time=time.time()
     dic={}
     dic_func={}
     for mn in range(500+file_inc[res]*10,520+file_inc[res]*10):
         for e in e_value:
-            preprocess = [standard_scaler, minmax_scaler, [normalizer]*10]  # ,[polynomial]*5
+            preprocess = [standard_scaler, minmax_scaler, [normalizer]*10, [quantile_transform]*5]  # ,[polynomial]*5
             MLs = [[DeepLearner] * 20]  # [SVM]*100,
             preprocess_list = unpack(preprocess)
             MLs_list = unpack(MLs)
@@ -107,7 +102,7 @@ def _test(res=''):
                     if counter not in dic[e].keys():
                         dic[e][counter] = []
                         dic_func[counter]=[]
-                    if e == 0.05:
+                    if e == 0.1:
                         dic_func[counter].append(key)
                     dic[e][counter].append(max(lis_value))
                     dic_auc[counter]=max(lis_value)
@@ -130,7 +125,7 @@ def _test(res=''):
 
 if __name__ == '__main__':
     for i in file_inc.keys():
-        if i not in ['camel', 'xerces', 'jedit']: continue
+        if file_inc[i] < 5: continue
         print(i)
         with ProcessPoolExecutor(max_workers=4) as executor:
             result = executor.submit(_test, i).result()

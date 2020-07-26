@@ -1,19 +1,19 @@
 from __future__ import print_function, division
-
 import os
 cwd = os.getcwd()
 import_path=os.path.abspath(os.path.join(cwd, '..'))
 import sys
 sys.path.append(import_path)
 
-from random import seed
-import numpy as np
 from helper.transformation import *
+from random import seed
 from helper.utilities import _randchoice, unpack
 from helper.ML import *
 from itertools import product
+import numpy as np
+import pandas as pd
 from sklearn.metrics import auc
-from helper.demos import *
+from concurrent.futures import ProcessPoolExecutor
 import time
 import pickle
 from collections import OrderedDict
@@ -21,7 +21,6 @@ from operator import itemgetter
 
 
 metrics=["d2h","popt","popt20"]
-
 data_path = os.path.join(cwd, "..","..", "data","defect")
 
 file_dic = {"ivy":     ["ivy-1.1.csv", "ivy-1.4.csv", "ivy-2.0.csv"],\
@@ -35,13 +34,9 @@ file_dic = {"ivy":     ["ivy-1.1.csv", "ivy-1.4.csv", "ivy-2.0.csv"],\
         "xalan": ["xalan-2.4.csv", "xalan-2.5.csv", "xalan-2.6.csv", "xalan-2.7.csv"], \
         "xerces": ["xerces-1.2.csv", "xerces-1.3.csv", "xerces-1.4.csv"]
         }
-
-file_inc = {"ivy": 0, "lucene": 1, "poi":  2, "synapse":3, "velocity":4, "camel": 5,"jedit": 6,
-            "log4j": 7, "xalan": 8,"xerces": 9}
-
-def readfile(path=""):
-    df=pd.read_csv(path)
-    return df
+#file_inc = {"ivy": 0, "lucene": 1, "poi":  2, "synapse":3, "velocity":4, "camel": 5,"jedit": 6,
+#            "log4j": 7, "xalan": 8,"xerces": 9}
+file_inc = {x: i for (i, x) in enumerate(file_dic.keys())}
 
 def _test(res=''):
     paths = [os.path.join(data_path, file_name) for file_name in file_dic[res]]
@@ -53,21 +48,18 @@ def _test(res=''):
     df=pd.concat([train_df,test_df],ignore_index=True)
     df['bug']=df['bug'].apply(lambda x: 0 if x == 0 else 1)
 
-    metric="popt20"
+    metric="f1"
+
     final = {}
     final_auc={}
     e_value = [0.2]
     start_time=time.time()
     dic={}
     dic_func={}
-    for mn in range(500+file_inc[res]*10,521+file_inc[res]*10):
+    for mn in range(500+file_inc[res]*10,520+file_inc[res]*10):
         for e in e_value:
-            np.random.seed(mn)
-            seed(mn)
-            preprocess = [standard_scaler, minmax_scaler, maxabs_scaler, [robust_scaler] * 20, kernel_centerer,
-                          [quantile_transform] * 200
-                , normalizer, [binarize] * 100]  # ,[polynomial]*5
-            MLs = [NB, [KNN] * 20, [RF] * 50, [DT] * 30, [LR] * 50]  # [SVM]*100,
+            preprocess = [standard_scaler, minmax_scaler, [normalizer]*10]  # ,[polynomial]*5
+            MLs = [[DeepLearner] * 20]  # [SVM]*100,
             preprocess_list = unpack(preprocess)
             MLs_list = unpack(MLs)
             combine = [[r[0], r[1]] for r in product(preprocess_list, MLs_list)]
@@ -75,6 +67,7 @@ def _test(res=''):
             if e not in final_auc.keys():
                 final_auc[e]=[]
                 dic[e] = {}
+
 
             func_str_dic = {}
             func_str_counter_dic = {}
@@ -88,7 +81,7 @@ def _test(res=''):
                 func_str_counter_dic[string1] = 0
 
             counter=0
-            while counter!=40:
+            while counter!=30:
                 if counter not in dic_func.keys():
                     dic_func[counter]=[]
                 try:
@@ -109,17 +102,18 @@ def _test(res=''):
                     if counter not in dic[e].keys():
                         dic[e][counter] = []
                         dic_func[counter]=[]
-                    if e == 0.025:
+                    if e == 0.05:
                         dic_func[counter].append(key)
                     dic[e][counter].append(max(lis_value))
                     dic_auc[counter]=max(lis_value)
 
                     counter+=1
                 except:
-                    pass
+                    raise
 
             dic1 = OrderedDict(sorted(dic_auc.items(), key=itemgetter(0))).values()
-            area_under_curve=round(auc(list(range(len(dic1))), dic1), 3)
+            area_under_curve = round(auc(list(range(len(dic1))), list(dic1)), 3)
+            print("AUC: ", area_under_curve)
             final[e]=dic_auc
             final_auc[e].append(area_under_curve)
     total_run=time.time()-start_time
@@ -130,6 +124,8 @@ def _test(res=''):
     print(final_auc)
 
 if __name__ == '__main__':
-    for key in file_dic.keys():
-        print(key)
-        _test(key)
+    for i in file_inc.keys():
+        if file_inc[i] >= 5: continue
+        print(i)
+        with ProcessPoolExecutor(max_workers=4) as executor:
+            result = executor.submit(_test, i).result()
