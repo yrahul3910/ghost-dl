@@ -1,4 +1,3 @@
- 
 <h1 align=center>GHOST</h1>
 <p align=center>
   <img src="https://image.freepik.com/free-vector/vector-illustration-cute-cartoon-halloween-ghost_43633-3344.jpg" width=200>
@@ -29,26 +28,27 @@ GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a par
 
 # Research Questions
 
-## RQ1: Does deep learning work for defect prediction?
+## RQ1: Does standard deep learning work for defect prediction?
 
-For defect prediction, standard deep learners usually do not perform better than existing state-of-the-art methods in 33/40 experiments.
-[Link to code](./doc/RQ1.py)
+For defect prediction, standard deep learners usually do not perform better than existing state-of-the-art methods in 30/40 experiments.
+[Code](./RQ1.ipynb)
 
-## RQ2: How can deep learning perform better for defect prediction?
+## RQ2: Why does deep learning fail for defect prediction?
 
-The lack-of-success of deep learning in defect prediction can be attributed to optimizing for the wrong metric.
-[Link to code](./doc/RQ2.py)
+The lack-of-success of deep learning in defect prediction can be attributed to optimizing for the wrong performance measure.
+[Code](./RQ2.py)
 
-## RQ3: How do we improve the results of deep learners on defect prediction?
+## RQ3: How might we improve the results of deep learners on defect prediction?
 
 For most evaluation goals, this modified version of deep learning performs better than the prior state-of-the-art.
-[Link to code](./src/defect prediction/main_d2h.py')
+[Code](./RQ3.sh')
 
 ## RQ4: Does deep learning work well in all cases?
 
 Depending on the goals of the data mining, deep learning may or may not be best choice.
+[Code](./RQ4.sh)
 
 ## RQ5: How slow is tuning for deep learning for defect prediction?
 
 Tuning deep learners is both practical and tractable for defect prediction.
-[Link to code](./doc/RQ5.py)
+[Link to code](./RQ5.py)

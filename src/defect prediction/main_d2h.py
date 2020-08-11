@@ -20,7 +20,6 @@ from collections import OrderedDict
 from operator import itemgetter
 
 
-metrics=["d2h","popt","popt20"]
 data_path = os.path.join(cwd, "..","..", "data","defect")
 
 file_dic = {"ivy":     ["ivy-1.4.csv", "ivy-2.0.csv"],\
@@ -39,8 +38,6 @@ file_dic = {"ivy":     ["ivy-1.4.csv", "ivy-2.0.csv"],\
         "xalan": ["xalan-2.4.csv", "xalan-2.5.csv"]
         }
 
-#file_inc = {"ivy": 0, "lucene": 1, "poi":  2, "synapse":3, "velocity":4, "camel": 5,"jedit": 6,
-#            "log4j": 7, "xalan": 8,"xerces": 9}
 file_inc = {x: i for (i, x) in enumerate(file_dic.keys())}
 
 def _test(res=''):
@@ -87,6 +84,7 @@ def _test(res=''):
 
             counter=0
             while counter!=30:
+                print(counter)
                 if counter not in dic_func.keys():
                     dic_func[counter]=[]
                 try:
@@ -107,8 +105,7 @@ def _test(res=''):
                     if counter not in dic[e].keys():
                         dic[e][counter] = []
                         dic_func[counter]=[]
-                    if e == 0.05:
-                        dic_func[counter].append(key)
+                    dic_func[counter].append(key)
                     dic[e][counter].append(max(lis_value))
                     dic_auc[counter]=max(lis_value)
 
@@ -118,11 +115,9 @@ def _test(res=''):
 
             dic1 = OrderedDict(sorted(dic_auc.items(), key=itemgetter(0))).values()
             area_under_curve = round(auc(list(range(len(dic1))), list(dic1)), 3)
-            print("AUC: ", area_under_curve)
             final[e]=dic_auc
             final_auc[e].append(area_under_curve)
     total_run=time.time()-start_time
-    final_auc["temp"]=final
     final_auc["time"] = total_run
     final_auc["counter_full"]=dic
     final_auc["settings"]=dic_func
@@ -130,7 +125,6 @@ def _test(res=''):
 
 if __name__ == '__main__':
     for i in file_inc.keys():
-        if i not in ['camel', 'xerces', 'jedit']: continue
         print(i)
         with ProcessPoolExecutor(max_workers=4) as executor:
             result = executor.submit(_test, i).result()
