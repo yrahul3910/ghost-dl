@@ -1,4 +1,3 @@
-<h1 align=center>GHOST</h1>
 <p align=center>
   <img src="https://image.freepik.com/free-vector/vector-illustration-cute-cartoon-halloween-ghost_43633-3344.jpg" width=150>
   <br>
@@ -17,37 +16,33 @@
 </p>
 <hr />
 
-# Why Deep Learning Fails for Defect Prediction (and How to Fix it using GHOST)
-GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a paradigm for fast training and tuning of deep learners for software engineering. We use DODGE for hyperparameter optimziation; as such, the code is based off the [DODGE repository](https://github.com/amritbhanu/Dodge). 
+# On the Value of Oversampling for Deep Learning in Software Defect Prediction
+
+This repository is the reference implementation for the paper in the title above.
+
+GHOST (Goal-oriented Hyperparameter Optimization for Scalable Training) is a paradigm for fast training and tuning of deep learners for software engineering. We use DODGE for hyperparameter optimziation; as such, the code is based off the [DODGE repository](https://github.com/amritbhanu/Dodge). We use our lab's internal package, raise-utils, for standardized, high-quality code.
 
 # Usage
 
-- Use `pip install -r requirements.txt` to install all the python3 dependencies and package (alternatively, run `make install`).
-- Run `python3 main_[d2h|popt20].py`
+- Use `pip install -r requirements.txt` to install all the python3 dependencies.
+- Run `python3 steps.py`
 
-# Research Questions
+Within `steps.py`, you will see a dictionary of options that can be turned on or off. This was used to perform the ablation study. You can choose how you wish to run GHOST using this dictionary as well as the helper functions below. To run the Scott-Knott tests, we used our package's implementation (see the docs [here](https://raise.readthedocs.io/en/latest/index.html#module-raise_utils.interpret)). 
 
-## RQ1: Does standard deep learning work for defect prediction?
+# Paper
 
-For defect prediction, standard deep learners usually do not perform better than existing state-of-the-art methods in 30/40 experiments.
-[Code](./RQ1.ipynb)
+Our paper was accepted to IEEE Transactions on Software Engineering 2021. You can view it [here](https://ieeexplore.ieee.org/iel7/32/4359463/09429914.pdf?casa_token=BvjobEj94EYAAAAA:JfWkU3SXbqkM4suLSPUlCHF7zX3o9-T-ezVuivzDT8Dn1y0Nu7eT3bXh0uexTI9s9DEgQ_5u).
 
-## RQ2: Why does deep learning fail for defect prediction?
+# Cite this
 
-The lack-of-success of deep learning in defect prediction can be attributed to optimizing for the wrong performance measure.
-[Code](./RQ2.py)
+```
+@article{yedida2021value,
+  title={On the Value of Oversampling for Deep Learning in Software Defect Prediction},
+  author={Yedida, Rahul and Menzies, Tim},
+  journal={IEEE Transactions on Software Engineering},
+  year={2021},
+  publisher={IEEE}
+}
+```
 
-## RQ3: How might we improve the results of deep learners on defect prediction?
 
-For most evaluation goals, this modified version of deep learning performs better than the prior state-of-the-art.
-[Code](./RQ3.sh')
-
-## RQ4: Does deep learning work well in all cases?
-
-Depending on the goals of the data mining, deep learning may or may not be best choice.
-[Code](./RQ4.sh)
-
-## RQ5: How slow is tuning for deep learning for defect prediction?
-
-Tuning deep learners is both practical and tractable for defect prediction.
-[Link to code](./RQ5.py)
