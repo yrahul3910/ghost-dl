@@ -1,11 +1,10 @@
 <h1 align=center>GHOST</h1>
 <p align=center>
-  <img src="https://image.freepik.com/free-vector/vector-illustration-cute-cartoon-halloween-ghost_43633-3344.jpg" width=200>
+  <img src="https://image.freepik.com/free-vector/vector-illustration-cute-cartoon-halloween-ghost_43633-3344.jpg" width=150>
   <br>
 <a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/README.md">about</a>  :: 
 <a href="https://github.com/anonymousalpaca/ghost-dl/">code</a>  ::
 <a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/LICENSE">license</a>  ::
-<a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/INSTALL.md">install</a>  ::
 <a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/CODE_OF_CONDUCT.md">contribute</a>  ::
 <a href="https://github.com/anonymousalpaca/ghost-dl/issues/">issues</a>  ::
 <a href="https://github.com/anonymousalpaca/ghost-dl/blob/master/CONTACT.md">contact</a>
